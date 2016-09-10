@@ -12,17 +12,17 @@ namespace CloakMdApi.Controllers
     public class NoteController : ApiController
     {
         [HttpPost]
-        [Route("publish")]
-        public async Task<HttpResponseMessage> PublishNote(PublishNoteViewModel model)
+        [Route("share")]
+        public async Task<HttpResponseMessage> ShareNote(PublishNoteViewModel model)
         {
-            var result = await DataLayer.PublishNote(new NoteModel(model));
+            var result = await DataLayer.StoreNote(new NoteModel(model));
             if (result != null)
             {
                 return Request.CreateResponse(HttpStatusCode.Created, result);
             }
             return Request.CreateResponse(HttpStatusCode.BadRequest, new
             {
-                Message = @"Was not able to publish this note"
+                Message = @"Was not able to share this note"
             });
         }
 
@@ -41,7 +41,7 @@ namespace CloakMdApi.Controllers
                         DestroyAfterReading = result.DestroyAfterReading
                     });
                 }
-                DataLayer.DestroyNoteById(id);
+                await DataLayer.DestroyNoteById(id);
                 return Request.CreateResponse(HttpStatusCode.BadRequest, new
                 {
                     Message = @"Note expired"

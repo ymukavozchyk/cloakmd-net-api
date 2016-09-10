@@ -25,7 +25,7 @@ namespace CloakMdApi.BusinessLogic
             return result.FirstOrDefault();
         }
 
-        public static async Task<string> PublishNote(NoteModel model)
+        public static async Task<string> StoreNote(NoteModel model)
         {
             var notes = Db.GetCollection<NoteModel>("notes");
             await notes.InsertOneAsync(model);
