@@ -1,4 +1,12 @@
-# CloakMD
-### .NET Web API version of backend
+# [CloakMD](https://github.com/ymukavozchyk/cloakmd)
+## API
 
-https://github.com/ymukavozchyk/cloakmd
+### Stack
+* ASP.NET Web API 2
+* MongoDB
+
+### Author
+Yauheni Mukavozchyk
+
+### License
+MIT
