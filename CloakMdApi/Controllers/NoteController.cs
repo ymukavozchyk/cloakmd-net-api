@@ -76,7 +76,10 @@ namespace CloakMdApi.Controllers
                 {
                     return Request.CreateResponse(HttpStatusCode.OK);
                 }
-                return Request.CreateResponse(HttpStatusCode.NotFound);
+                return Request.CreateResponse(HttpStatusCode.NotFound, new
+                {
+                    Message = @"Was not able to find note"
+                });
             }
             return Request.CreateResponse(HttpStatusCode.BadRequest, new
             {
