@@ -9,14 +9,14 @@ namespace CloakMdApi.Models
         [BsonId]
         public ObjectId Id { get; set; }
         public string Data { get; set; }
-        public DateTime ExpirationDateTime { get; set; }
+        public DateTime CreationDateTime { get; set; }
         public bool DestroyAfterReading { get; set; }
 
         public NoteModel(PublishNoteViewModel viewModel)
         {
             Id = ObjectId.GenerateNewId();
             Data = viewModel.Data;
-            ExpirationDateTime = viewModel.ExpirationDatetime;
+            CreationDateTime = DateTime.Now;
             DestroyAfterReading = viewModel.DestroyAfterReading;
         }
     }

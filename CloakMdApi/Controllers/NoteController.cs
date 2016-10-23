@@ -1,5 +1,4 @@
-﻿using System;
-using System.Net;
+﻿using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -15,14 +14,28 @@ namespace CloakMdApi.Controllers
         [Route("share")]
         public async Task<HttpResponseMessage> ShareNote(PublishNoteViewModel model)
         {
-            var result = await DataLayer.StoreNote(new NoteModel(model));
-            if (result != null)
+            if (model == null)
             {
-                return Request.CreateResponse(HttpStatusCode.Created, result);
+                return Request.CreateResponse(HttpStatusCode.BadRequest, new
+                {
+                    Message = @"Note model is null"
+                });
+            }
+            if (model.Validate())
+            {
+                var result = await DataLayer.StoreNote(new NoteModel(model));
+                if (result != null)
+                {
+                    return Request.CreateResponse(HttpStatusCode.Created, result);
+                }
+                return Request.CreateResponse(HttpStatusCode.BadRequest, new
+                {
+                    Message = @"Was not able to share this note"
+                });
             }
             return Request.CreateResponse(HttpStatusCode.BadRequest, new
             {
-                Message = @"Was not able to share this note"
+                Message = @"Note is empty"
             });
         }
 
@@ -30,10 +43,10 @@ namespace CloakMdApi.Controllers
         [Route("retrieve/{id}")]
         public async Task<HttpResponseMessage> RetrieveNote(string id)
         {
-            var result = await DataLayer.GetNoteById(id);
-            if (result != null)
+            if (!string.IsNullOrEmpty(id))
             {
-                if (result.ExpirationDateTime >= DateTime.Now.ToUniversalTime())
+                var result = await DataLayer.GetNoteById(id);
+                if (result != null)
                 {
                     return Request.CreateResponse(HttpStatusCode.OK, new RetrieveNoteViewModel
                     {
@@ -41,15 +54,14 @@ namespace CloakMdApi.Controllers
                         DestroyAfterReading = result.DestroyAfterReading
                     });
                 }
-                await DataLayer.DestroyNoteById(id);
-                return Request.CreateResponse(HttpStatusCode.BadRequest, new
+                return Request.CreateResponse(HttpStatusCode.NotFound, new
                 {
-                    Message = @"Note expired"
+                    Message = @"Was not able to find note"
                 });
             }
-            return Request.CreateResponse(HttpStatusCode.NotFound, new
+            return Request.CreateResponse(HttpStatusCode.BadRequest, new
             {
-                Message = @"Was not able to find this note"
+                Message = @"Id of the note is either null or empty"
             });
         }
 
@@ -57,12 +69,19 @@ namespace CloakMdApi.Controllers
         [Route("destroy/{id}")]
         public async Task<HttpResponseMessage> DestroyNote(string id)
         {
-            var result = await DataLayer.DestroyNoteById(id);
-            if (result)
+            if (!string.IsNullOrEmpty(id))
             {
-                return Request.CreateResponse(HttpStatusCode.OK);
+                var result = await DataLayer.DestroyNoteById(id);
+                if (result)
+                {
+                    return Request.CreateResponse(HttpStatusCode.OK);
+                }
+                return Request.CreateResponse(HttpStatusCode.NotFound);
             }
-            return Request.CreateResponse(HttpStatusCode.NotFound);
+            return Request.CreateResponse(HttpStatusCode.BadRequest, new
+            {
+                Message = @"Id of the note is either null or empty"
+            });
         }
     }
 }
