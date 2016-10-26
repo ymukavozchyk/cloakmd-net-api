@@ -12,7 +12,7 @@ namespace CloakMdApi.Controllers
     {
         [HttpPost]
         [Route("share")]
-        public async Task<HttpResponseMessage> ShareNote(PublishNoteViewModel model)
+        public async Task<HttpResponseMessage> ShareNote(NoteViewModel model)
         {
             if (model == null)
             {
@@ -48,7 +48,7 @@ namespace CloakMdApi.Controllers
                 var result = await DataLayer.GetNoteById(id);
                 if (result != null)
                 {
-                    return Request.CreateResponse(HttpStatusCode.OK, new RetrieveNoteViewModel
+                    return Request.CreateResponse(HttpStatusCode.OK, new NoteViewModel
                     {
                         Data = result.Data,
                         DestroyAfterReading = result.DestroyAfterReading

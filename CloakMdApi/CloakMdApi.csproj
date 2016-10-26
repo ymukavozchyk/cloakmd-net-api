@@ -105,8 +105,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\NoteModel.cs" />
-    <Compile Include="Models\PublishNoteViewModel.cs" />
-    <Compile Include="Models\RetrieveNoteViewModel.cs" />
+    <Compile Include="Models\NoteViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

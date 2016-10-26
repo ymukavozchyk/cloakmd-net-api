@@ -12,7 +12,7 @@ namespace CloakMdApi.Models
         public DateTime CreationDateTime { get; set; }
         public bool DestroyAfterReading { get; set; }
 
-        public NoteModel(PublishNoteViewModel viewModel)
+        public NoteModel(NoteViewModel viewModel)
         {
             Id = ObjectId.GenerateNewId();
             Data = viewModel.Data;
