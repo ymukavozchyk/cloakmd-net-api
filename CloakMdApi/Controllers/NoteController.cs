@@ -24,18 +24,18 @@ namespace CloakMdApi.Controllers
             if (model.Validate())
             {
                 var result = await DataLayer.StoreNote(new NoteModel(model));
-                if (result != null)
+                if (result.IsSuccessful)
                 {
-                    return Request.CreateResponse(HttpStatusCode.Created, result);
+                    return Request.CreateResponse(HttpStatusCode.Created, result.Data);
                 }
                 return Request.CreateResponse(HttpStatusCode.BadRequest, new
                 {
-                    Message = @"Was not able to share this note"
+                    Message = result.ErrorMessage
                 });
             }
             return Request.CreateResponse(HttpStatusCode.BadRequest, new
             {
-                Message = @"Note is empty"
+                Message = @"Note model is invalid: note is empty"
             });
         }
 
@@ -46,17 +46,17 @@ namespace CloakMdApi.Controllers
             if (!string.IsNullOrEmpty(id))
             {
                 var result = await DataLayer.GetNoteById(id);
-                if (result != null)
+                if (result.IsSuccessful)
                 {
                     return Request.CreateResponse(HttpStatusCode.OK, new NoteViewModel
                     {
-                        Data = result.Data,
-                        DestroyAfterReading = result.DestroyAfterReading
+                        Data = result.Data.Data,
+                        DestroyAfterReading = result.Data.DestroyAfterReading
                     });
                 }
-                return Request.CreateResponse(HttpStatusCode.NotFound, new
+                return Request.CreateResponse(HttpStatusCode.BadRequest, new
                 {
-                    Message = @"Was not able to find note"
+                    Message = result.ErrorMessage
                 });
             }
             return Request.CreateResponse(HttpStatusCode.BadRequest, new
@@ -72,13 +72,13 @@ namespace CloakMdApi.Controllers
             if (!string.IsNullOrEmpty(id))
             {
                 var result = await DataLayer.DestroyNoteById(id);
-                if (result)
+                if (result.IsSuccessful)
                 {
                     return Request.CreateResponse(HttpStatusCode.OK);
                 }
-                return Request.CreateResponse(HttpStatusCode.NotFound, new
+                return Request.CreateResponse(HttpStatusCode.BadRequest, new
                 {
-                    Message = @"Was not able to find note"
+                    Message = result.ErrorMessage
                 });
             }
             return Request.CreateResponse(HttpStatusCode.BadRequest, new
