@@ -35,7 +35,7 @@ namespace CloakMdApi.Controllers
             }
             return Request.CreateResponse(HttpStatusCode.BadRequest, new
             {
-                Message = @"Note model is invalid: note is empty"
+                Message = @"Note model is invalid: note is either null or empty"
             });
         }
 

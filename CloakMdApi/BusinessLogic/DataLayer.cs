@@ -24,7 +24,7 @@ namespace CloakMdApi.BusinessLogic
             var parseResult = ObjectId.TryParse(id, out parsedId);
             if (!parseResult)
             {
-                return new ActionResultModel<NoteModel>(false, @"Was not able to parse note Id", null);
+                return new ActionResultModel<NoteModel>(false, @"Was not able to parse the note Id", null);
             }
             try
             {
@@ -34,7 +34,7 @@ namespace CloakMdApi.BusinessLogic
                 var returnedNote = result.FirstOrDefault();
                 if (returnedNote == null)
                 {
-                    return new ActionResultModel<NoteModel>(false, @"Was not able to find note", null);
+                    return new ActionResultModel<NoteModel>(false, @"Was not able to find the note", null);
                 }
                 return new ActionResultModel<NoteModel>(true, null, returnedNote);
             }
@@ -64,7 +64,7 @@ namespace CloakMdApi.BusinessLogic
             var parseResult = ObjectId.TryParse(id, out parsedId);
             if (!parseResult)
             {
-                return new ActionResultModel<bool>(false, @"Was not able to parse note Id", false);
+                return new ActionResultModel<bool>(false, @"Was not able to parse the note Id", false);
             }
             try
             {
